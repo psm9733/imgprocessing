@@ -80,7 +80,7 @@ Mat ConvCalculator(Mat img, float *kernel) {
 		for (int x = 1; x < width - 1; x++) {
 			int index = y * width + x;
 			for (int z = 0; z < 3; z++) {
-				resultImgPointer[3 * index + z] =
+				float data = 
 					(float)targetImgPointer[3 * (index - width - 1) + z] * (*(kernel + 0)) +
 					(float)targetImgPointer[3 * (index - width + 0) + z] * (*(kernel + 1)) +
 					(float)targetImgPointer[3 * (index - width + 1) + z] * (*(kernel + 2)) +
@@ -90,6 +90,13 @@ Mat ConvCalculator(Mat img, float *kernel) {
 					(float)targetImgPointer[3 * (index + width - 1) + z] * (*(kernel + 6)) +
 					(float)targetImgPointer[3 * (index + width + 0) + z] * (*(kernel + 7)) +
 					(float)targetImgPointer[3 * (index + width + 1) + z] * (*(kernel + 8));
+				if (data > 255) {
+					data = 255;
+				}
+				else if (data <= 0) {
+					data = 0;
+				}
+				resultImgPointer[3 * index + z] = data;
 			}
 		}
 	}
